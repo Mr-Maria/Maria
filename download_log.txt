@@ -1,0 +1,1 @@
+INFO:django.utils.autoreload:/Users/maria/Projects/detcom/file/data_processing.py changed, reloading.
