@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .viewsets import CompanyDataViewSet  # alebo akékoľvek iné viewsety, ktoré používate
+from .viewsets import CompanyDataViewSet
 
 router = DefaultRouter()
 router.register(r'', CompanyDataViewSet, basename='company_data')

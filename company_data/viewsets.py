@@ -55,8 +55,12 @@ class CompanyDataViewSet(viewsets.ViewSet):
                     error_message = "Invalid tax_id"
 
             if not company and vat_id:
-                company = Company.objects.filter(vat_id=vat_id).first()
-                if not company:
+                companies_with_same_vat_id = Company.objects.filter(vat_id=vat_id)
+                if companies_with_same_vat_id.count() > 1:
+                    return Response({"crn": '', "tax_id": '', "vat_id": ''}, status=status.HTTP_200_OK)
+                elif companies_with_same_vat_id.count() == 1:
+                    company = companies_with_same_vat_id.first()
+                else:
                     error_message = "Invalid vat_id"
 
             if not company:
