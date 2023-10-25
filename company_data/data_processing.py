@@ -1,16 +1,31 @@
 import io
+import os
 from .models import Company
 import requests
 import xml.etree.ElementTree as ET
 import re
 
 
-def download_and_temp_save(url):
-    response = requests.get(url, stream=True)
-    response.raise_for_status()
-    if not response.content:
-        raise ValueError("No content downloaded")
-    content = io.BytesIO(response.content)
+# TODO: add url adresa  - nevymazať
+# def download_and_temp_save(url):
+#     response = requests.get(url, stream=True)
+#     response.raise_for_status()
+#     if not response.content:
+#         raise ValueError("No content downloaded")
+#     content = io.BytesIO(response.content)
+#     return content, None
+
+
+def download_and_temp_save(filename):
+    data_dir = 'company_data/data'
+    filepath = os.path.join(data_dir, filename)
+
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"File {filename} not found in directory {data_dir}")
+
+    with open(filepath, 'rb') as file:
+        content = io.BytesIO(file.read())
+
     return content, None
 
 
@@ -46,4 +61,3 @@ def save_companies_to_db(companies_dict):
                 'vat_id': vat_id_value
             }
         )
-

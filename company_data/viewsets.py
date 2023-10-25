@@ -11,12 +11,16 @@ class CompanyDataViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['get'], url_path="download_file")
     def update_company_info(self, request):
         logging.info("Starting file download process...")
-        url1 = request.GET.get('url1', 'https://report.financnasprava.sk/ds_dphs.zip')
-        url2 = request.GET.get('url2', 'https://report.financnasprava.sk/ds_dsrdp.zip')
+        # TODO: add url adresa  - nevymazať
+        # url1 = request.GET.get('url1', 'https://report.financnasprava.sk/ds_dphs.zip')
+        # url2 = request.GET.get('url2', 'https://report.financnasprava.sk/ds_dsrdp.zip')
         companies_dict = {}
         try:
-            content1, err1 = download_and_temp_save(url1)
-            content2, err2 = download_and_temp_save(url2)
+            # TODO: add url adresa  - nevymazať
+            # content1, err1 = download_and_temp_save(url1)
+            # content2, err2 = download_and_temp_save(url2)
+            content1, err1 = download_and_temp_save('ds_dphs.zip')
+            content2, err2 = download_and_temp_save('ds_dsrdp.zip')
 
             if err1 or err2:
                 return Response({'error_data': f'{err1} {err2}'.strip()}, status=status.HTTP_400_BAD_REQUEST)
@@ -57,7 +61,8 @@ class CompanyDataViewSet(viewsets.ViewSet):
             if not company and vat_id:
                 companies_with_same_vat_id = Company.objects.filter(vat_id=vat_id)
                 if companies_with_same_vat_id.count() > 1:
-                    return Response({"crn": '', "tax_id": '', "vat_id": ''}, status=status.HTTP_200_OK)
+                    return Response({"crn": '', "tax_id": '', "vat_id": ''})
+                    # return Response({"crn": '', "tax_id": '', "vat_id": [vat_id, "duplicitný vat_id"]})
                 elif companies_with_same_vat_id.count() == 1:
                     company = companies_with_same_vat_id.first()
                 else:
